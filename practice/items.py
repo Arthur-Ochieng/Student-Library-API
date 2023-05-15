@@ -3,8 +3,8 @@ from fastapi import FastAPI, status, HTTPException
 from pydantic import BaseModel, Field
 from datetime import date
 from typing import Optional, List
-from database import SessionLocal
-import models
+from sql_app.database import SessionLocal
+import sql_app.models as models
 
 app = FastAPI()
 

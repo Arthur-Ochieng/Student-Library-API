@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Path, HTTPException, status
 from pydantic import BaseModel
+
 # Necessary when using optional parameters
 # Pydantic is responsible for the data validation
 from typing import Optional
