@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+# import models
 from . import models
-from .database import engine
+from .config import engine
 
 from .routes import router
 
