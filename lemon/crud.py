@@ -18,13 +18,6 @@ def create_book(db: Session, book: BookSchema):
     db.refresh(_book)
     return _book
 
-
-def remove_book(db: Session, book_id: int):
-    _book = get_book_by_id(db=db, book_id=book_id)
-    db.delete(_book)
-    db.commit()
-
-
 def update_book(db: Session, book_id: int, title: str, description: str):
     _book = get_book_by_id(db=db, book_id=book_id)
 
@@ -34,3 +27,8 @@ def update_book(db: Session, book_id: int, title: str, description: str):
     db.commit()
     db.refresh(_book)
     return _book
+
+def remove_book(db: Session, book_id: int):
+    _book = get_book_by_id(db=db, book_id=book_id)
+    db.delete(_book)
+    db.commit()

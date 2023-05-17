@@ -5,17 +5,32 @@ from datetime import date
 
 T = TypeVar('T')
 
+# Student
 class StudentSchema(BaseModel):
     id: int
-    first_name: str
-    last_name: str
-    dob: date
-    email: str
+    first_name: Optional [str] = None
+    last_name: Optional [str] = None
+    dob: Optional [date] = None 
+    email: Optional [str] = None
     class Config:
         orm_mode = True
-
 class RequestStudent(BaseModel):
     parameter: StudentSchema = Field(...)
+
+# Books
+class BookSchema(BaseModel):
+    id: int
+    title: Optional [str] = None
+    author: Optional [str] = None
+    published_date: Optional [date] = None 
+    ISBN: Optional [str] = None
+    class Config:
+        orm_mode = True 
+
+class RequestBook(BaseModel):
+    parameter: BookSchema = Field(...)
+
+# Association
 
 class Request(GenericModel, Generic[T]):
     parameter: Optional[T] = Field(...)

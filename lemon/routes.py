@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Path, Depends
 from .config import SessionLocal
 from sqlalchemy.orm import Session
-from .schemas import BookSchema, Request, Response, RequestBook
+from .schemas import Response, RequestBook
 
 from . import crud
 
