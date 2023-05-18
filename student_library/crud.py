@@ -1,6 +1,6 @@
 from datetime import date
 from sqlalchemy.orm import Session
-from .models import Student, Book
+from .models import Student, Book, StudentBookAssociation
 from .schemas import StudentSchema, BookSchema
 
 # Students
@@ -76,7 +76,7 @@ def create_association(db: Session, student_id: int, book_id: int):
     _student = get_student(db = db, student_id = student_id)
     _book = get_book(db = db, book_id = book_id)
 
-    _student.books.append(_book)
+    _student.append(_book)
     db.commit()
     db.refresh(_student)
     return _student
@@ -87,7 +87,15 @@ def create_association(db: Session, student_id: int, book_id: int):
 # Parameters: Student ID
 # Response: JSON array with book details
 def get_books_by_student(db: Session, student_id: int):
+    books = []
+    student_books = db.query(StudentBookAssociation).filter(StudentBookAssociation.stud_id == student_id).all()
+    for student_book in student_books:
+        book = get_book(db=db, book_id=student_book.book_id)
+        books.append(book)
+    return books
+
     _student = get_student(db = db, student_id = student_id)
+    # Establish the relationship between one student and all the books related to that id
     return _student.books
 
 

@@ -8,32 +8,50 @@ T = TypeVar('T')
 # Student
 class StudentSchema(BaseModel):
     id: int
-    first_name: Optional [str] = None
-    last_name: Optional [str] = None
-    dob: Optional [date] = None 
-    email: Optional [str] = None
+    first_name: str 
+    last_name: str 
+    dob:  date
+    email: str
     class Config:
         orm_mode = True
+
 class RequestStudent(BaseModel):
     parameter: StudentSchema = Field(...)
+    # The field function sets the attribute as required
+
+
 
 # Books
 class BookSchema(BaseModel):
     id: int
-    title: Optional [str] = None
-    author: Optional [str] = None
-    published_date: Optional [date] = None 
-    ISBN: Optional [str] = None
+    title: str
+    author: str
+    published_date: date 
+    ISBN: str
     class Config:
         orm_mode = True 
 
 class RequestBook(BaseModel):
     parameter: BookSchema = Field(...)
 
+
+
 # Association
+class AssociationSchema(BaseModel):
+    id: int
+    stud_id: int
+    book_id: int
+    date_read: date
+    class Config:
+        orm_mode = True
+
+class RequestAssociation(BaseModel):
+    parameter: AssociationSchema = Field(...)
+
+
 
 class Request(GenericModel, Generic[T]):
-    parameter: Optional[T] = Field(...)
+    parameter: T = Field(...)
 
 class Response(GenericModel, Generic[T]):
     code: str
