@@ -38,7 +38,7 @@ async def get_student(student_id: int, db: Session = Depends(get_db)):
 @router_stud.put("/{student_id}")
 async def update_student(student_id: int, request: RequestStudent, db: Session = Depends(get_db)):
     _student = crud.update_student(db, student_id=request.parameter.id, first_name=request.parameter.first_name, 
-            last_name=request.parameter.last_name, dob=request.parameter.dob, email=request.parameter.email)
+            last_name=request.parameter.last_name, date_of_birth=request.parameter.date_of_birth, email=request.parameter.email)
     if _student is None:
         raise HTTPException(status_code=404, detail="Student not found")
     return Response(status="OK", code=200, message="Student updated successfully", result=_student)
@@ -48,13 +48,14 @@ async def delete_student(student_id: int, request: RequestStudent,  db: Session 
     _student = crud.delete_student(db, student_id=request.parameter.id)
     if _student is None:
         raise HTTPException(status_code=404, detail="Student not found")
-    return Response(status="OK", code=200, message="Student deleted successfully", result=_student).dict(exclude=True)
+    # _student = crud.delete_student(db, student_id=request.parameter.id)
+    return Response(status="OK", code=200, message="Student deleted successfully", result=_student).dict(exclude_none=True)
 
 
 
 # Books
 @router_book.post("")
-async def create_book(request: RequestStudent,  db: Session = Depends(get_db)):
+async def create_book(request: RequestBook,  db: Session = Depends(get_db)):
     crud.create_book(db, book=request.parameter)
     return Response(status="OK", code=200, message="Book created successfully").dict(exclude_none=True)
 
@@ -72,7 +73,7 @@ async def get_book(book_id: int, db: Session = Depends(get_db)):
 
 @router_book.put("/{book_id}")
 async def update_book(book_id: int, request: RequestBook, db: Session = Depends(get_db)):
-    book = crud.update_book(db, book_id, book_id=request.parameter.id, title=request.parameter.title, 
+    book = crud.update_book(db, book_id=request.parameter.id, title=request.parameter.title, 
             author=request.parameter.author, published_date=request.parameter.published_date, ISBN=request.parameter.ISBN)
     if book is None:
         raise HTTPException(status_code=404, detail="Book not found")

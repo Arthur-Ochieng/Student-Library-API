@@ -8,7 +8,7 @@ class Student(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     first_name = Column(String,index=True)
     last_name = Column(String,index=True)
-    dob = Column(Date,index=True)
+    date_of_birth = Column(Date,index=True)
     email = Column(String, unique=True, index=True)
     # books = relationship("StudentBookAssociation", back_populates="stud_id")
 

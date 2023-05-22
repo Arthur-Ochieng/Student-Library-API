@@ -9,7 +9,7 @@ def get_students(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Student).offset(skip).limit(limit).all()
 
 def create_student(db: Session, student: schemas.StudentCreate):
-    db_student = models.Student(email=student.email, first_name=student.first_name, last_name=student.last_name, dob= student.dob)
+    db_student = models.Student(email=student.email, first_name=student.first_name, last_name=student.last_name, date_of_birth= student.date_of_birth)
     db.add(db_student)
     db.commit()
     db.refresh(db_student)

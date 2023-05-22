@@ -10,8 +10,9 @@ class StudentSchema(BaseModel):
     id: int
     first_name: str 
     last_name: str 
-    dob:  date
+    date_of_birth:  date
     email: str
+    # book_id: int
     class Config:
         orm_mode = True
 
@@ -28,6 +29,7 @@ class BookSchema(BaseModel):
     author: str
     published_date: date 
     ISBN: str
+    # student_id: int 
     class Config:
         orm_mode = True 
 

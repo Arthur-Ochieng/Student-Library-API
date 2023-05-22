@@ -5,7 +5,7 @@ class StudentBase(BaseModel):
     first_name: str
     last_name: str
     email: str
-    dob: date
+    date_of_birth: date
     
 class StudentCreate(StudentBase):
     pass
