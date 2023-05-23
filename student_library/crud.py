@@ -1,9 +1,9 @@
 
 from datetime import date
 from sqlalchemy.orm import Session
-from .models import Student, Book
-from .schemas import StudentSchema, BookSchema
-from fastapi import Path
+from .models import Student, Book,  StudentBookAssociation
+from .schemas import StudentSchema, BookSchema, AssociationSchema
+from fastapi import Path, Query
 
 # Students
 # Retrieve one student 
@@ -34,11 +34,36 @@ def update_student(db: Session, student_id: int, first_name: str, last_name: str
     db.refresh(_student)
     return _student
 
+# def update_student(db:Session, student_id: int, student: UpdateStudent):
+#     _student = get_student(db = db, student_id = student_id)
+    
+#     if student_id not in Student.query.all():
+#         return {"Error" : "Student not found"}
+#     if student.first_name != None:
+#         Student.query.filter_by(id=student_id).update({"first_name": student.first_name})
+#     if student.last_name != None:
+#         Student.query.filter_by(id=student_id).update({"last_name": student.last_name})
+#     if student.date_of_birth != None:
+#         Student.query.filter_by(id=student_id).update({"date_of_birth": student.date_of_birth})
+#     if student.email != None:
+#         Student.query.filter_by(id=student_id).update({"email": student.email})
+
+#     db.commit()
+#     db.refresh(Student.query.filter_by(id=student_id).first())
+#     return Student.query.filter_by(id=student_id).first()
+
 # Delete a student
 def delete_student(db: Session, student_id: int):
     _student = get_student(db = db, student_id = student_id)
     db.delete(_student)
     db.commit()
+
+# def delete_student(db: Session, student_id: int):
+#     _student = get_student(db = db, student_id = student_id)
+#     if student_id not in Student.query.all():
+#         return {"Error" : "Student not found"}
+#     Student.query.filter_by(id=student_id).delete()
+#     db.commit()
 
 # Books
 # Retrieve a book
@@ -82,6 +107,7 @@ def delete_book(db: Session, book_id: int):
 # Endpoint: POST /students/{student_id}/books/{book_id}
 # Parameters: Student ID, Book ID
 # Response: JSON object with confirmation message
+
 # def create_association(db: Session, student_id: int, book_id: int):
 #     _student = get_student(db = db, student_id = student_id)
 #     _book = get_book(db = db, book_id = book_id)
@@ -91,28 +117,39 @@ def delete_book(db: Session, book_id: int):
 #     db.refresh(_student)
 #     return _student
 
+def create_association(db: Session, association: AssociationSchema):
+    _association = StudentBookAssociation(student_id=association.student_id, book_id=association.book_id, date_read=association.date_read)
+    db.add(_association)
+    db.commit()
+    db.refresh(_association)
+    return _association
+
+def get_association(db: Session, student_id: int, book_id: int):
+    return db.query(StudentBookAssociation).filter(StudentBookAssociation.student_id == student_id, StudentBookAssociation.book_id == book_id).first()
+
 
 # # Get books read by a student
 # # Endpoint: GET /students/{id}/books
 # # Parameters: Student ID
 # # Response: JSON array with book details
-# def get_books_by_student(db: Session, student_id: int):
-#     books = []
-#     student_books = db.query(StudentBookAssociation).filter(StudentBookAssociation.stud_id == student_id).all()
-#     for student_book in student_books:
-#         book = get_book(db=db, book_id=student_book.book_id)
-#         books.append(book)
-#     return books
+def get_books_by_student(db: Session, student_id: int):
+    books = []
+    student_books = db.query(StudentBookAssociation).filter(StudentBookAssociation.student_id == student_id).all()
+    for student_book in student_books:
+        book = get_book(db=db, book_id=student_book.book_id)
+        books.append(book)
+    return books
 
-#     _student = get_student(db = db, student_id = student_id)
-#     # Establish the relationship between one student and all the books related to that id
-#     return _student.books
 
 
 # # Get students who have read a book
 # # Endpoint: GET /books/{id}/students
 # # Parameters: Book ID
 # # Response: JSON array with student details
-# def get_students_by_book(db: Session, book_id: int):
-#     _book = get_book(db = db, book_id = book_id)
-#     return _book.students
+def get_students_by_book(db: Session, book_id: int):
+    students = []
+    book_students = db.query(StudentBookAssociation).filter(StudentBookAssociation.book_id == book_id).all()
+    for book_student in book_students:
+        student = get_student(db=db, student_id=book_student.student_id)
+        students.append(student)
+    return students

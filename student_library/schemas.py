@@ -18,9 +18,12 @@ class StudentSchema(BaseModel):
 
 class RequestStudent(BaseModel):
     parameter: StudentSchema = Field(...)
-    # The field function sets the attribute as required
 
-
+# class UpdateStudent(BaseModel):
+#     first_name: Optional[str]
+#     last_name: Optional[str]
+#     date_of_birth: Optional[date]
+#     email: Optional[str]
 
 # Books
 class BookSchema(BaseModel):
@@ -36,12 +39,16 @@ class BookSchema(BaseModel):
 class RequestBook(BaseModel):
     parameter: BookSchema = Field(...)
 
-
+# class UpdateBook(BaseModel):
+#     title: Optional[str]
+#     author: Optional[str]
+#     published_date: Optional[date]
+#     ISBN: Optional[str]
 
 # Association
 class AssociationSchema(BaseModel):
     id: int
-    stud_id: int
+    student_id: int
     book_id: int
     date_read: date
     class Config:

@@ -88,9 +88,28 @@ async def delete_book(book_id: int, request: RequestBook,  db: Session = Depends
 
 
 # Association
-# @router.post("/student/{student_id}/book/{book_id}")
-# async def create_association(request:RequestAssociation, db:Session = Depends(get_db)):
+@router_association.post("/student/{student_id}/book/{book_id}")
+# @router_association.post("")
+async def create_associations(student_id: int, book_id: int, request:RequestAssociation, db:Session = Depends(get_db)):
+    _student = crud.get_student(db, student_id)
+    _book = crud.get_book(db, book_id)
+    if _student is None:
+        raise HTTPException(status_code=404, detail="Student not found")
+    if _book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    # if _student.id == _book.id:
+    #     raise HTTPException(status_code=400, detail="Student and Book cannot be associated with the same id")
+    if crud.get_association(db, student_id=request.parameter.student_id, book_id=request.parameter.book_id) is not None:
+        raise HTTPException(status_code=400, detail="Association already exists")
+    crud.create_association(db, association=request.parameter)
+    return Response(status="OK", code=200, message="Association created successfully").dict(exclude_none=True)
 
-# @router.get_books_by_student("/student/{student_id}/books")
+@router_association.get("/student/{student_id}/books")
+async def get_books_by_student(student_id: int, db: Session = Depends(get_db)):
+    _books = crud.get_books_by_student(db, student_id)
+    return Response(status="OK", code=200, message="Books retrieved successfully", result=_books)
 
-# @router.get_students_by_book("book/{book_id}/students")
+@router_association.get("book/{book_id}/students")
+async def get_students_by_book(book_id: int, db: Session = Depends(get_db)):
+    _students = crud.get_students_by_book(db, book_id)
+    return Response(status="OK", code=200, message="Students retrieved successfully", result=_students)
