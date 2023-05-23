@@ -5,6 +5,9 @@ from datetime import date
 
 T = TypeVar('T')
 
+# config and schema-extra are used to declare examples
+# of pydantic models
+
 # Student
 class StudentSchema(BaseModel):
     id: int
@@ -18,6 +21,10 @@ class StudentSchema(BaseModel):
 
 class RequestStudent(BaseModel):
     parameter: StudentSchema = Field(...)
+
+# Field is used to pass on extra information
+# Where you can pass an example as an argument Field(Example = "Foo")
+# The field will not be used for validation but rather for documentation
 
 # class UpdateStudent(BaseModel):
 #     first_name: Optional[str]
@@ -67,3 +74,4 @@ class Response(GenericModel, Generic[T]):
     status: str
     message: str
     result: Optional[T]
+
