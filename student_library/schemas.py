@@ -1,5 +1,5 @@
 from typing import List, Optional, Generic, TypeVar
-from pydantic import BaseModel , Field
+from pydantic import BaseModel , Field, EmailStr
 from pydantic.generics import GenericModel
 from datetime import date
 
@@ -14,7 +14,7 @@ class StudentSchema(BaseModel):
     first_name: str 
     last_name: str 
     date_of_birth:  date
-    email: str
+    email: EmailStr
     # book_id: int
     class Config:
         orm_mode = True

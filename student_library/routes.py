@@ -16,6 +16,10 @@ def get_db():
     finally:
         db.close()
 
+# Know how you can partially update a model
+# This must be done using put as indicated in the documentation
+# Refer to body updates on the fast api documentation
+# The same applies for deleting a record in model and being able to successfully see the status code and the return message
 
 # Students
 @router_stud.post("")
@@ -89,7 +93,6 @@ async def delete_book(book_id: int, request: RequestBook,  db: Session = Depends
 
 # Association
 @router_association.post("/student/{student_id}/book/{book_id}")
-# @router_association.post("")
 async def create_associations(student_id: int, book_id: int, request:RequestAssociation, db:Session = Depends(get_db)):
     _student = crud.get_student(db, student_id)
     _book = crud.get_book(db, book_id)
