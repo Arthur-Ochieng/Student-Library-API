@@ -1,4 +1,5 @@
-from fastapi import Depends, FastAPI
+# Using background tasks
+from fastapi import Depends, FastAPI, BackgroundTasks
 
 from dependencies import get_query_token, get_token_header
 from internal import admin
@@ -15,6 +16,12 @@ app.include_router(
         dependencies=[Depends(get_token_header)],
         responses={418: {"description": "I'm a teapot"}},
 )
+
+def write_notifications(email: str, message = ""):
+    with open("notifications.txt", mode="w") as email_file:
+        content = f"notification for {email}: {message}"
+        email_file.write(content)
+
 
 @app.get("/")
 async def root():

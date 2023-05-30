@@ -1,8 +1,8 @@
 
 from datetime import date
 from sqlalchemy.orm import Session
-from .models import Student, Book,  StudentBookAssociation
-from .schemas import StudentSchema, BookSchema, AssociationSchema
+from models import Student, Book,  StudentBookAssociation
+from schemas import StudentSchema, BookSchema, AssociationSchema
 from fastapi import Path, Query
 
 # Students
