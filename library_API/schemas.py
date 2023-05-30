@@ -25,6 +25,8 @@ class Association(AssociationBase):
     class Config:
         orm_mode = True
 
+
+
 class BookBase(BaseModel):
     title: str
     author: str
@@ -46,6 +48,9 @@ class Book(BookBase):
 
     class Config:
         orm_mode = True
+
+
+        
 
 class StudentBase(BaseModel):
     first_name: str

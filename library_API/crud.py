@@ -83,7 +83,7 @@ def delete_book(db: Session, book_id: int):
 
 # Association
 def create_association(db: Session, association: schemas.AssociationCreate):
-    db_association = models.StudentBookAssociation(student_id=association.student_id, book_id=association.book_id)
+    db_association = models.StudentBookAssociation(student_id=association.student_id, book_id=association.book_id, date_read=association.date_read)
     db.add(db_association)
     db.commit()
     db.refresh(db_association)
