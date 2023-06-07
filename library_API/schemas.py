@@ -70,7 +70,7 @@ class StudentUpdate(BaseModel):
 
 class Student(StudentBase):
     id: int
-    books: list[Book] = []
+    # books: list[Book] = []
 
     class Config:
         orm_mode = True

@@ -12,7 +12,7 @@ class Student(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    date_of_birth = Column(Date, nullable=False, index=True)
+    date_of_birth = Column(Date)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
 
@@ -35,8 +35,8 @@ class StudentBookAssociation(Base):
 
     # id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     id = Column(Integer, primary_key=True, index=True)
-    student_id = Column(Integer, ForeignKey('Student.id', ondelete="CASCADE"), index=True, )
-    book_id = Column(Integer, ForeignKey('Book.id', ondelete="CASCADE"), index = True)
+    student_id = Column(Integer, ForeignKey('Student.id', ondelete="CASCADE"), index=True, nullable=False)
+    book_id = Column(Integer, ForeignKey('Book.id', ondelete="CASCADE"), index = True, nullable=False)
     students = relationship("Student", back_populates="books")
     books = relationship("Book", back_populates="student")
     date_read = Column(Date)

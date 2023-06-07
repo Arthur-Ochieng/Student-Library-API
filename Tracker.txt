@@ -1,0 +1,119 @@
+** Library API Tracker
+Endpoints - Student
+	    Book - Cannot update an existing student
+	    Association - Getting books by student and getting students by book not properly functional
+
+
+
+Models - All models have been successfully created
+
+
+
+Alembic - Need to take care of the db migrations - Not completed
+
+
+
+Authentication - Achieved using JWT
+	       - Security implemented only waiting for integration into library_API
+
+
+
+Authorization - Create roles such as admin, librarian, student
+	      - Create middleware to protect endpoints according to the assigned roles
+
+
+
+Documentation - Documents should be available at /docs or /redocs
+
+
+
+**TESTING**
+
+Unit Testing - Tests using pytest
+	     - Test coverage using tools such as coverage.py
+
+
+
+Integration Testing - Test the whole system as a whole
+		    - Test interaction btn different components such as API and db
+
+
+
+Deployment - Cloud providers might be AWS, Azure, or Google Cloud
+	   - Containerization using docker for ease in deployment
+	   - Configure for different environments - (development, staging, production)
+
+
+
+Monitoring - Implement tools such as Prometheus and Grafana
+	   - Monitor key performance indicators such as response times, error rates, and resource utilization
+
+
+
+Logging - Configure logging using in-built python's logging module
+	- Store the logs in a centralized and searchable place such as Elasticsearch for ease in troubleshooting and analysis
+
+
+** Error Handling and Validation **
+
+Input Validation - Pydantic models for validation (Done)
+
+
+Error Handling - Custom exception classes to handle specific errors (Done)
+
+
+** Performance and Scalability **
+
+Caching - Strategies such as redis or memcached - to store frequently accessed data and reduce db load
+	- Use cache headers and validation techniques such as ETag, Last Modifies to optimized client side caching
+
+
+
+Database Optimization - Use indexing, pagination and query optimization techniques
+
+
+
+Load Balancing - Deploy app with multiple instances behind a load balancer to distribute traffic and improve the overall performance
+	       - Auto scaling techniques to scale the no. of instances based on demand
+
+
+
+** Maintenance and Support**
+
+Versioning - Implement versioning to allow for backward compatibility and communicate changes to client
+           - Use semantic versioning - eg V1 or V2 or custom request headers
+
+
+
+Bug Tracking and Issue Resolution - Use issue tracking tools such as Jira or Github issues to manage and prioritize issues
+
+
+
+CI/CD (Continuous Integration and Continuous Deployment) - Implement pipeline tools such as Jenkins, Travis CI or Github actions to automate testing, building and deployment
+
+
+
+** Backup and Recovery**
+
+Database Backup - Backup the db
+		- Implement regular db backups and store them in a secure off-site location
+
+
+Disaster Recovery - Disaster recovery plan that shows how to restore application functionality
+		  - It should include data restoration, system recovery, and communication with stakeholders
+
+
+
+API Rate Limiting - Protect API from DoS attacks
+		  - Configure rate limits based on the no of requests per IP addresses, users, or API key within on specified window
+
+
+
+
+** CHALLENGES **
+
+1. Implementation of UUIDs instead of IDs on the models
+2. When creating an association you have to input the book and student id twice
+3. How to auto assign an ID if it is deleted from the table. Currently the IDs just autoincrement, ignoring the deleted ID
+4. Alembic when trying to upgrade the version throws errors
+5. Trying to implement unit tests... models cannot be found

@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from dependencies import get_db
 
 router = APIRouter(
-    prefix="/=association",
-    tags=["=association"],
+    prefix="/association",
+    tags=["association"],
     responses={404: {"description": "Not found"}},
 )  
 
@@ -21,16 +21,18 @@ def create_associations(student_id: int, book_id: int, association: schemas.Asso
         raise HTTPException(status_code=400, detail="Association already exists")
     return crud.create_association(db, association=association)
 
-@router.get("/student/{student_id}/books", response_model=schemas.Association)
+@router.get("/student/{student_id}/books", response_model=list[schemas.Book])
 def get_books_by_student(student_id: int, db: Session = Depends(get_db)):
     _student = crud.get_student(db, student_id)
     if _student is None:
         raise HTTPException(status_code=404, detail="Student not found")
-    return crud.get_books_by_student(db, student_id=student_id)
+    association = crud.get_books_by_student(db, student_id=student_id)
+    return association
 
-@router.get("/book/{book_id}/students", response_model=schemas.Association)
+@router.get("/book/{book_id}/students", response_model=list[schemas.Student])
 def get_students_by_book(book_id: int, db: Session = Depends(get_db)):
     _book = crud.get_book(db, book_id)
     if _book is None:
         raise HTTPException(status_code=404, detail="Book not found")
-    return crud.get_students_by_book(db, book_id=book_id)
+    association = crud.get_students_by_book(db, book_id=book_id)
+    return association

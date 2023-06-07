@@ -19,7 +19,7 @@ def create_student(db: Session, student: schemas.StudentCreate):
     return db_student
 
 def update_student(student_id: int, student: schemas.StudentUpdate, db: Session):
-    db_student = db.query(models.Student).filter(models.Student.id == student_id).first()
+    db_student = get_student(db, student_id)
     if db_student:
         if student.email:
             db_student.email = student.email
@@ -31,10 +31,9 @@ def update_student(student_id: int, student: schemas.StudentUpdate, db: Session)
             db_student.date_of_birth = student.date_of_birth
         if student.hashed_password:
             db_student.hashed_password = student.hashed_password
-
-        db.commit()
-        db.refresh(db_student)
-        return db_student
+    db.commit()
+    db.refresh(db_student)
+    return db_student
 
 def delete_student(db: Session, student_id: int):
     db_student = get_student(db, student_id)
@@ -96,7 +95,7 @@ def get_books_by_student(db: Session, student_id: int):
     books = []
     student_books = db.query(models.StudentBookAssociation).filter(models.StudentBookAssociation.student_id == student_id).all()
     for student_book in student_books:
-        book = get_book(db, student_book.book_id)
+        book = get_book(db=db, book_id=student_book.book_id)
         books.append(book)
     return books
 
@@ -104,7 +103,7 @@ def get_students_by_book(db: Session, book_id: int):
     students = []
     book_students = db.query(models.StudentBookAssociation).filter(models.StudentBookAssociation.book_id == book_id).all()
     for book_student in book_students:
-        student = get_student(db, book_student.student_id)
+        student = get_student(db=db, student_id=book_student.student_id)
         students.append(student)
     return students
 

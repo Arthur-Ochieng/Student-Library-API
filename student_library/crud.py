@@ -102,21 +102,6 @@ def delete_book(db: Session, book_id: int):
     db.commit()
 
 # Association
-
-# Associate a student with a book
-# Endpoint: POST /students/{student_id}/books/{book_id}
-# Parameters: Student ID, Book ID
-# Response: JSON object with confirmation message
-
-# def create_association(db: Session, student_id: int, book_id: int):
-#     _student = get_student(db = db, student_id = student_id)
-#     _book = get_book(db = db, book_id = book_id)
-
-#     _student.append(_book)
-#     db.commit()
-#     db.refresh(_student)
-#     return _student
-
 def create_association(db: Session, association: AssociationSchema):
     _association = StudentBookAssociation(student_id=association.student_id, book_id=association.book_id, date_read=association.date_read)
     db.add(_association)
@@ -127,11 +112,6 @@ def create_association(db: Session, association: AssociationSchema):
 def get_association(db: Session, student_id: int, book_id: int):
     return db.query(StudentBookAssociation).filter(StudentBookAssociation.student_id == student_id, StudentBookAssociation.book_id == book_id).first()
 
-
-# # Get books read by a student
-# # Endpoint: GET /students/{id}/books
-# # Parameters: Student ID
-# # Response: JSON array with book details
 def get_books_by_student(db: Session, student_id: int):
     books = []
     student_books = db.query(StudentBookAssociation).filter(StudentBookAssociation.student_id == student_id).all()
@@ -140,12 +120,6 @@ def get_books_by_student(db: Session, student_id: int):
         books.append(book)
     return books
 
-
-
-# # Get students who have read a book
-# # Endpoint: GET /books/{id}/students
-# # Parameters: Book ID
-# # Response: JSON array with student details
 def get_students_by_book(db: Session, book_id: int):
     students = []
     book_students = db.query(StudentBookAssociation).filter(StudentBookAssociation.book_id == book_id).all()
